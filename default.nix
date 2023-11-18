@@ -8,15 +8,9 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ stdenv gcc gtest ];
 
+  doCheck = true;
   buildPhase = ''
-    g++ -o app src/main.cpp
     g++ -o tests test/main_test.cpp -lgtest -lpthread
-  '';
-
-  installPhase = ''
-    mkdir -p $out/bin
-    cp app $out/bin/app
-    cp tests $out/bin/tests
   '';
 
   checkPhase = ''
