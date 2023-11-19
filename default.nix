@@ -10,11 +10,15 @@ stdenv.mkDerivation rec {
 
   doCheck = true;
   buildPhase = ''
-    g++ -o tests test/main_test.cpp -lgtest -lpthread
+    g++ -std=c++20 -o tests test/main_test.cpp -lgtest -lpthread
   '';
 
   checkPhase = ''
     ./tests
+  '';
+
+  installPhase = ''
+    install -Dm755 tests $out/bin/tests
   '';
 
   meta = with lib; {
