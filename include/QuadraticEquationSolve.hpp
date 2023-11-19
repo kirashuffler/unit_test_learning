@@ -1,9 +1,12 @@
+#include <iostream>
 #include <vector>
 #include <math.h>
 #include <stdexcept>
+#include <limits>
 
-constexpr double e = 10e-10;
-
+constexpr double e = 10e-6;
+constexpr double kInfinity = std::numeric_limits<double>::infinity();
+const double kNan = std::nan("");
 bool isZero(double value){
   return (value - e <= 0) && (value + e >= 0);
 }
@@ -16,9 +19,18 @@ bool greaterThanZero(double value){
   return value > e;
 }
 
-std::vector<double> solve(double a, double b, double c){
+std::vector<double> QuadraticEquationSolve(double a, double b, double c){
+  if (std::abs(a) >= kInfinity - e ||
+      std::abs(b) >= kInfinity - e || 
+      std::abs(c) >= kInfinity - e
+      )
+    throw std::runtime_error("Coefficients must not be an infinite value");
+
+  if (isnan(a) || isnan(b) || isnan(c))
+    throw std::runtime_error("Coefficients must not be an nan value");
+
   if (isZero(a))
-    throw std::runtime_error("Coefficient a must not be zero");
+    throw std::runtime_error("Coefficient 'a' must not be zero");
 
   std::vector<double> solutions;
   auto D = b*b - 4 * a * c;
